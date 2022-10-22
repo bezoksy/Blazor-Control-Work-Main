@@ -1,0 +1,93 @@
+﻿@page "/registr"
+@using Data
+
+<h3>Registration</h3>
+<fieldset>
+    <div class="" style="width: 350px;">
+        <label for="login">Login</label>
+        <input class="form-control" placeholder="Password" @bind-value="@_login">
+
+        <label for="password">Password</label>
+        <input class="form-control" placeholder="Password" @bind-value="@_password">
+
+        <label for="reserPasswod">Reset password</label>
+        <input class="form-control" placeholder="reset password" @bind-value="@_resetPassword">
+
+         <label for="name">Name</label>
+        <input class="form-control" placeholder="Name" @bind-value="@_name">
+
+        <label for="surname">Surname</label>
+        <input class="form-control" placeholder="Surname" @bind-value="@_surname">
+
+        <label for="email">Email</label>
+        <input class="form-control" placeholder="email" @bind-value="@_email">
+
+         @if(_login == "")
+         {
+            <div class="alert alert-warning">
+                Login cannot be empty!
+            </div>
+         }
+         @if(_password == "")
+         {
+            <div class="alert alert-warning">
+                Password cannot be empty!
+            </div>
+         }
+         @if(_resetPassword != _password)
+         {
+            <div class="alert alert-warning">
+                No match
+            </div>
+         }
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="RegistrationUser">Registration</button>
+
+</fieldset>
+@code {
+    private UserToDB _userToDB;
+    //private User[] _users;
+    private string _login;
+    private string _password;
+    private string _resetPassword;
+    private string _name;
+    private string _surname;
+    private string _email;
+    protected override async Task OnInitializedAsync()
+    {
+        _userToDB = new UserToDB();
+    
+    }
+    private bool CheckFields()
+    {
+        return _login != "" &&
+               _password != "" &&
+               _resetPassword != "" &&
+               _password == _resetPassword;
+    }
+
+    private void RegistrationUser()
+    {
+        if (CheckFields())
+        {
+            var user = new User()
+                {
+                    Name = _name,
+                    Surname = _surname,
+                    Email = _email,
+                    Login = _login,
+                    Password = _password
+                };
+            _userToDB.AddUser(user);
+
+            _login = "";
+            _password = "";
+            _resetPassword = "";
+            _name = "";
+            _surname = "";
+            _email = "";
+
+            _userToDB.currentUser = user;
+        }
+    }
+}

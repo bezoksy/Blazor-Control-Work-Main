@@ -1,0 +1,14 @@
+﻿@page "/auth"
+<h3>Authorization</h3>
+<div class="" style="width: 350px;">
+        <label for="login">Login</label>
+        <input class="form-control" placeholder="Login" @bind-value="@_login">
+
+        <label for="password">Login</label>
+        <input class="form-control" placeholder="Password" @bind-value="@_login">
+</div>
+<button class="btn btn-primary">Log in</button>
+@code {
+    private string _login;
+    private string _password;
+}
