@@ -45,7 +45,7 @@
 
 </fieldset>
 @code {
-    private UserToDB _userToDB;
+    
     //private User[] _users;
     private string _login;
     private string _password;
@@ -53,10 +53,11 @@
     private string _name;
     private string _surname;
     private string _email;
+    private UserToDB _userToDB;
     protected override async Task OnInitializedAsync()
     {
         _userToDB = new UserToDB();
-    
+
     }
     private bool CheckFields()
     {
@@ -78,7 +79,7 @@
                     Login = _login,
                     Password = _password
                 };
-            _userToDB.AddUser(user);
+            _userToDB.AddToDataBase(user);
 
             _login = "";
             _password = "";

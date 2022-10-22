@@ -6,17 +6,20 @@ namespace AuntOnBlazor.Data
     {
         public User currentUser { get; set; }
         private IMongoCollection<User> _users;
-
-        public UserToDB()
+        public static IMongoDatabase db = new MongoClient("mongodb://localhost").GetDatabase("DataUser");
+        public void AddToDataBase(User user)
         {
-            MongoClient client = new MongoClient("mongodb://localhost:27017");
-            var dataBase = client.GetDatabase("Users");
-            _users = dataBase.GetCollection<User>("Users");
+            var collection = db.GetCollection<User>("ExCollection");
+            _users = db.GetCollection<User>("DataUser");
+            collection.InsertOne(user);
         }
-
-        public void AddUser(User user)
+        public User AvailableUser(string log, string pas)
         {
-            _users.InsertOne(user);
+            var collection = db.GetCollection<User>("DataUser");
+            var unit = collection.Find(x => x.Login == log && x.Password == pas).FirstOrDefault();
+            return unit;
+            
         }
+        
     }
 }

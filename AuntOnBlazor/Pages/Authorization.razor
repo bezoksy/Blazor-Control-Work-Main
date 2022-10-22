@@ -1,14 +1,46 @@
 ﻿@page "/auth"
+@page "/navigate" 
+@inject NavigationManager NavigationManager
+@using Data
 <h3>Authorization</h3>
 <div class="" style="width: 350px;">
-        <label for="login">Login</label>
+        <label for="_login">Login</label>
         <input class="form-control" placeholder="Login" @bind-value="@_login">
 
-        <label for="password">Login</label>
-        <input class="form-control" placeholder="Password" @bind-value="@_login">
+        <label for="_password">Login</label>
+        <input class="form-control" placeholder="Password" @bind-value="@_password">
 </div>
-<button class="btn btn-primary">Log in</button>
+<button class="btn btn-primary" @onclick="AuthorizationInWeb">Log in</button>
+@if(_succesLogIn)
+{
+    <div class="alert alert-success">
+        Successful log in!
+    </div>
+}
+<p>@mes</p>
 @code {
     private string _login;
     private string _password;
+    private bool _succesLogIn;
+    private string mes;
+    UserToDB curUser = new UserToDB();
+    private User _user = new User();
+    private void AuthorizationInWeb()
+    {
+        var user = curUser.AvailableUser(_login, _password);
+        if (user != null)
+        {
+            _succesLogIn = true;
+            _user = user;
+            mes = "Нет совпадения";
+            return;
+        }
+        mes = "Успешно";
+
+        _succesLogIn = false;
+    }
+    private void NavigateToComp()
+    {
+        NavigationManager.NavigateTo("counter");
+    }
 }
